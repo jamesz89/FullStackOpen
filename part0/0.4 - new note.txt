@@ -4,19 +4,19 @@ note over browser: User writes a note and clicks the submit button
 browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
 server-->browser: HTML-code
 
-note over browser: Browser executes HTML and request CSS and JS files
+note over browser: Executes HTML and request CSS and JS files
 
 browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
 server-->browser: CSS-code
 browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
 server-->browser: JS-code
 
-note over browser: Browser executes JS code and requests data.json
+note over browser: Executes JS code and requests data.json
 
 browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
 server-->browser: [{content: "sup yall", date: "2021-03-20T11:23:07.698Z"},…]
 
 note over browser: 
-Browser executes the event handler
+Executes the event handler
 then renders the data into the HTML
 end note
