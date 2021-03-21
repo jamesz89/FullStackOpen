@@ -1,0 +1,9 @@
+title 0.6: New note
+
+note over Browser: User writes a note and clicks the submit button
+Browser->Server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+note over Browser
+JS renders the new note in the HTML and with an event handler submits data to the server
+end note
+Server-->Browser: Response 201: note created
+note over Browser: response message is printed in console

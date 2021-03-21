@@ -1,0 +1,18 @@
+title Exercise 0.5: Single Page App
+
+Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+Server-->Browser: HTML-code
+Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+Server-->Browser: CSS-code
+Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+Server-->Browser: JS-code
+
+note over Browser: Executes JS code and requests data.json
+
+Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+Server-->Browser: [{"content":"heyyy this is also a new note","date":"2021-03-21T06:21:22.934Z"},...]
+
+note over Browser: 
+Executes the event handler
+then renders the data into the HTML
+end note

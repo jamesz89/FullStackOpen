@@ -2,6 +2,10 @@ title Exercise 0.4: new note
 
 note over browser: User writes a note and clicks the submit button
 browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+note over server: new note is added to data.json
+
+server-->browser: Response 302: Redirect
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
 server-->browser: HTML-code
 
 note over browser: Executes HTML and request CSS and JS files
