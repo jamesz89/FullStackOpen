@@ -7,7 +7,8 @@ const App = () => {
     { name: 'Arto Hellas', number: '040-1234567' }
   ])
   const [newName, setNewName] = useState('')
-  const [newNumber, setNewNumber] =useState('')
+  const [newNumber, setNewNumber] = useState('')
+  const [filter, setfilter] = useState('')
 
   const handleNameChange = (event) => {
     console.log(event.target.value)
@@ -17,6 +18,11 @@ const App = () => {
   const handleNumberChange = (event) => {
     console.log(event.target.value)
     setNewNumber(event.target.value)
+  }
+
+  const handleFilter = (event) => {
+    console.log(event.target.value)
+    setfilter(event.target.value)
   }
 
   const addPerson = (event) => {
@@ -31,15 +37,17 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      Search: <input value={filter} onChange={handleFilter} />
+      <h2> Add new</h2>
       <form onSubmit={addPerson}>
         <div>
-          name: <input value={newName} onChange={handleNameChange} />
+          Name: <input value={newName} onChange={handleNameChange} />
         </div>
         <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
+          Number: <input value={newNumber} onChange={handleNumberChange} />
         </div>
         <div>
-          <button type="submit">add</button>
+          <button type="submit">Add</button>
         </div>
       </form>
       <h2>Numbers</h2>
