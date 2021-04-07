@@ -4,7 +4,11 @@ const Person = ({ person }) => <p>{person.name} {person.number}</p>
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-1234567' }
+    { name: 'Arto Hellas', number: '040-1234567' },
+    { name: 'Susan Boyle', number: '040-545435' },
+    { name: 'Karen Norman', number: '040-967867867' },
+    { name: 'Sammy Goldberg', number: '040-999845' },
+
   ])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
@@ -51,7 +55,11 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map(person => <Person key={person.name} person={person} />)}
+      {persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase())).map(filteredPersons => {
+        return (
+          <Person key={filteredPersons.name} person={filteredPersons} />
+        )
+      })}
     </div>
   )
 }
