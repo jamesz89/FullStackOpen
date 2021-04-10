@@ -1,21 +1,28 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+
 import Person from './components/Person'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-1234567' },
-    { name: 'Susan Boyle', number: '040-545435' },
-    { name: 'Karen Norman', number: '040-967867867' },
-    { name: 'Sammy Goldberg', number: '040-999845' },
-  ])
+  const [persons, setPersons] = useState([])
   const initialValues = {
     name: "",
     number: ""
   }
   const [values, setValues] = useState(initialValues)
   const [filter, setfilter] = useState('')
+
+  const hook = () => {
+    console.log('Fetching data...')
+    axios.get('http://localhost:3001/persons')
+    .then(response => {
+      console.log('Promise fullfiled...', response)
+      setPersons(response.data)
+    })
+  }
+  useEffect(hook, [])
 
   const handleInputChange = (event) => {
     const { name, value } = event.target
