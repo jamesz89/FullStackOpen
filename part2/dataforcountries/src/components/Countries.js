@@ -16,7 +16,7 @@ const Countries = (props) => {
       <div>
         <ul>
           {props.value.map(country => {
-            return <li key={country.alpha2Code}>{country.name}</li>
+            return <Country key={country.alpha2Code} value={country} />
           })}
         </ul>
       </div>
@@ -25,7 +25,19 @@ const Countries = (props) => {
     return (
       <div>
         {props.value.map(country => {
-          return (<Country key={country.alpha2Code} value={country} />
+          return (
+            <div key={country.alpha2Code}>
+              <h1>{country.name}</h1>
+              <p>Capital: {country.capital}</p>
+              <p>Population: {country.population.toLocaleString('de-DE')}</p>
+              <h2>Languages</h2>
+              <ul>
+                {country.languages.map(item => {
+                  return <li key={item.name}>{item.name}</li>
+                })}
+              </ul>
+              <img src={country.flag} width='200' />
+            </div>
           )
         })}
       </div>
