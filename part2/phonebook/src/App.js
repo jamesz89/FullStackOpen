@@ -17,10 +17,10 @@ const App = () => {
   const hook = () => {
     console.log('Fetching data...')
     axios.get('http://localhost:3001/persons')
-    .then(response => {
-      console.log('Promise fullfiled...', response)
-      setPersons(response.data)
-    })
+      .then(response => {
+        console.log('Promise fullfiled...', response)
+        setPersons(response.data)
+      })
   }
   useEffect(hook, [])
 
@@ -39,10 +39,15 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
+    const personObj = {
+      name: values.name,
+      number: values.number
+    }
     persons.some(person =>
       person.name.toLowerCase() === values.name.toLowerCase())
       ? window.alert(`${values.name} is already added to phonebook`)
-      : setPersons(persons.concat({ name: values.name, number: values.number }))
+      : axios.post('http://localhost:3001/persons', personObj)
+        .then(response => setPersons(persons.concat(response.data)))
     setValues({
       name: '',
       number: ''
