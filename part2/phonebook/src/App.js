@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 
+import personService from './services/personService'
 import Person from './components/Person'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
@@ -14,15 +14,14 @@ const App = () => {
   const [values, setValues] = useState(initialValues)
   const [filter, setfilter] = useState('')
 
-  const hook = () => {
-    console.log('Fetching data...')
-    axios.get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('Promise fullfiled...', response)
-        setPersons(response.data)
+  useEffect(() => {
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
-  }
-  useEffect(hook, [])
+
+  }, [])
 
   const handleInputChange = (event) => {
     const { name, value } = event.target
@@ -46,8 +45,9 @@ const App = () => {
     persons.some(person =>
       person.name.toLowerCase() === values.name.toLowerCase())
       ? window.alert(`${values.name} is already added to phonebook`)
-      : axios.post('http://localhost:3001/persons', personObj)
-        .then(response => setPersons(persons.concat(response.data)))
+      : personService
+        .create(personObj)
+        .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
     setValues({
       name: '',
       number: ''
