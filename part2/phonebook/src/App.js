@@ -54,6 +54,13 @@ const App = () => {
     })
   }
 
+  const deletePerson = personToDelete => {
+    if (window.confirm(`Do you want to delete ${personToDelete.name}?`)) {
+      personService.remove(personToDelete.id)
+      setPersons(persons.filter(person => person.id !== personToDelete.id))
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -74,6 +81,7 @@ const App = () => {
             <Person
               key={filteredPersons.name}
               person={filteredPersons}
+              handleClick={deletePerson}
             />
           )
         })}
