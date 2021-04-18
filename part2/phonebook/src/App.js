@@ -14,7 +14,8 @@ const App = () => {
   }
   const [values, setValues] = useState(initialValues)
   const [filter, setfilter] = useState('')
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -55,10 +56,10 @@ const App = () => {
     }
     personService
       .create(personObj)
-      .then(returnedPerson =>
+      .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
-      )
-    displayMessage('New contact added')
+        displayMessage('New contact added')
+      })
     setValues({
       name: '',
       number: ''
@@ -70,8 +71,12 @@ const App = () => {
       .update(id, values)
       .then(returnedPerson => {
         setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
+        displayMessage(`${returnedPerson.name}'s phone number has been updated to ${returnedPerson.number}`)
       })
-    displayMessage(`${values.name}'s phone number has been updated to ${values.number}`)
+      .catch(error => {
+        displayErrorMessage("Error: the person you want to update doesn't exist in the server")
+      })
+
     setValues({
       name: '',
       number: ''
@@ -81,8 +86,13 @@ const App = () => {
   const deletePerson = personToDelete => {
     if (window.confirm(`Do you want to delete ${personToDelete.name}?`)) {
       personService.remove(personToDelete.id)
-      setPersons(persons.filter(person => person.id !== personToDelete.id))
-      displayMessage(`${personToDelete.name} has beed removed from the phonebook`)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== personToDelete.id))
+          displayMessage(`${personToDelete.name} has beed removed from the phonebook`)
+        })
+        .catch(error => {
+          displayErrorMessage("Error: the person you want to delete doesn't exist in the server")
+        })
     }
   }
 
@@ -93,10 +103,18 @@ const App = () => {
     }, 5000)
   }
 
+  const displayErrorMessage = (message) => {
+    setErrorMessage(message)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message} />
+      <Notification message={message} type="success" />
+      <Notification message={errorMessage} type="error" />
       <Filter
         value={filter}
         onChange={handleFilter}
