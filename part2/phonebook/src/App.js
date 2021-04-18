@@ -36,18 +36,39 @@ const App = () => {
     setfilter(event.target.value)
   }
 
-  const addPerson = (event) => {
+  const checkPerson = (event) => {
     event.preventDefault()
+    const existingPerson = persons.find(person => values.name.toLowerCase() === person.name.toLowerCase())
+    if (existingPerson) {
+      updatePerson(existingPerson.id)
+    } else {
+      addPerson()
+    }
+  }
+
+  const addPerson = () => {
     const personObj = {
       name: values.name,
       number: values.number
     }
-    persons.some(person =>
-      person.name.toLowerCase() === values.name.toLowerCase())
-      ? window.alert(`${values.name} is already added to phonebook`)
-      : personService
-        .create(personObj)
-        .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
+    personService
+      .create(personObj)
+      .then(returnedPerson =>
+        setPersons(persons.concat(returnedPerson)))
+
+    setValues({
+      name: '',
+      number: ''
+    })
+  }
+
+  const updatePerson = (id) => {
+    personService
+      .update(id, values)
+      .then(returnedPerson => {
+        setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
+      })
+
     setValues({
       name: '',
       number: ''
@@ -70,7 +91,7 @@ const App = () => {
       />
       <h2>Add new</h2>
       <PersonForm
-        onSubmit={addPerson}
+        onSubmit={checkPerson}
         value={values}
         onChange={handleInputChange}
       />

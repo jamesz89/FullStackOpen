@@ -18,7 +18,7 @@ const PersonForm = (props) => {
             />
         </div>
         <div>
-          <button type="submit">Add</button>
+          <button type="submit">Add or Update</button>
         </div>
       </form>
     )
