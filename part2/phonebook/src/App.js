@@ -50,15 +50,18 @@ const App = () => {
   }
 
   const addPerson = () => {
-    const personObj = {
+    const newPerson = {
       name: values.name,
       number: values.number
     }
     personService
-      .create(personObj)
+      .create(newPerson)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
         displayMessage('New contact added')
+      })
+      .catch(error => {
+        displayErrorMessage(error.response.data.error.message)
       })
     setValues({
       name: '',
@@ -74,7 +77,7 @@ const App = () => {
         displayMessage(`${returnedPerson.name}'s phone number has been updated to ${returnedPerson.number}`)
       })
       .catch(error => {
-        displayErrorMessage("Error: the person you want to update doesn't exist in the server")
+        displayErrorMessage(error.response.data.error.message)
       })
 
     setValues({
@@ -91,7 +94,7 @@ const App = () => {
           displayMessage(`${personToDelete.name} has beed removed from the phonebook`)
         })
         .catch(error => {
-          displayErrorMessage("Error: the person you want to delete doesn't exist in the server")
+          displayErrorMessage(error.response.data.error.message)
         })
     }
   }
