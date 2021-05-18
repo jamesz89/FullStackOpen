@@ -1,4 +1,3 @@
-const http = require('http')
 const express = require('express')
 const app = express()
 const cors = require('cors')
@@ -13,9 +12,13 @@ const blogSchema = new mongoose.Schema({
 
 const Blog = mongoose.model('Blog', blogSchema)
 
-const mongoUrl = `mongodb+srv://fullstackopen:kainner7@cluster0.ro5o3.mongodb.net/bloglist?retryWrites=true&w=majority`
+const mongoUrl = 'mongodb+srv://fullstackopen:kainner7@cluster0.ro5o3.mongodb.net/bloglist?retryWrites=true&w=majority'
 
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+  .then(console.log('connection with DB established'))
+  .catch(error => {
+    console.log(error)
+  })
 
 app.use(cors())
 app.use(express.json())
@@ -29,13 +32,21 @@ app.get('/api/blogs', (request, response) => {
 })
 
 app.post('/api/blogs', (request, response) => {
-  const blog = new Blog(request.body)
+  const body = request.body
+
+  const blog = new Blog({
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes
+  })
 
   blog
     .save()
-    .then(result => {
-      response.status(201).json(result)
+    .then(savedBlog => {
+      response.status(201).json(savedBlog)
     })
+    .catch(error => console.log(error))
 })
 
 const PORT = 3003
