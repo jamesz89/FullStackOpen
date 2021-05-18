@@ -1,7 +1,9 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
+const morgan = require('morgan')
 
 const blogSchema = new mongoose.Schema({
   title: String,
@@ -12,7 +14,8 @@ const blogSchema = new mongoose.Schema({
 
 const Blog = mongoose.model('Blog', blogSchema)
 
-const mongoUrl = 'mongodb+srv://fullstackopen:kainner7@cluster0.ro5o3.mongodb.net/bloglist?retryWrites=true&w=majority'
+// eslint-disable-next-line no-undef
+const mongoUrl = process.env.MONGODB_URI
 
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
   .then(console.log('connection with DB established'))
@@ -22,6 +25,7 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, us
 
 app.use(cors())
 app.use(express.json())
+app.use(morgan('tiny'))
 
 app.get('/api/blogs', (request, response) => {
   Blog
