@@ -1,4 +1,5 @@
 const config = require('./utils/config')
+const logger = require('./utils/logger')
 const express = require('express')
 const app = express()
 const cors = require('cors')
@@ -17,9 +18,9 @@ const Blog = mongoose.model('Blog', blogSchema)
 const mongoUrl = config.MONGODB_URI
 
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
-  .then(console.log('connection with DB established'))
+  .then(logger.info('connection with DB established'))
   .catch(error => {
-    console.log(error)
+    logger.error(error)
   })
 
 app.use(cors())
@@ -49,10 +50,11 @@ app.post('/api/blogs', (request, response) => {
     .then(savedBlog => {
       response.status(201).json(savedBlog)
     })
-    .catch(error => console.log(error))
+    .catch(error => logger.error(error))
 })
 
-const PORT = 3003
+const PORT = config.PORT
+
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+  logger.info(`Server running on port ${PORT}`)
 })
