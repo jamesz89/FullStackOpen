@@ -1,10 +1,11 @@
 const config = require('./utils/config')
-const logger = require('./utils/logger')
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const mongoose = require('mongoose')
 const morgan = require('morgan')
+const logger = require('./utils/logger')
+const mongoose = require('mongoose')
+const middleware = require('./utils/middleware')
 
 const blogSchema = new mongoose.Schema({
   title: String,
@@ -15,10 +16,12 @@ const blogSchema = new mongoose.Schema({
 
 const Blog = mongoose.model('Blog', blogSchema)
 
+logger.info('Connecting to MongoDB')
+
 const mongoUrl = config.MONGODB_URI
 
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
-  .then(logger.info('connection with DB established'))
+  .then(logger.info('connection with MongoDB established'))
   .catch(error => {
     logger.error(error)
   })
@@ -52,6 +55,9 @@ app.post('/api/blogs', (request, response) => {
     })
     .catch(error => logger.error(error))
 })
+
+app.use(middleware.unknownEndpoint)
+// app.use(middleware.errorHandler)
 
 const PORT = config.PORT
 
