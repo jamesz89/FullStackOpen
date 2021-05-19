@@ -1,20 +1,13 @@
 const config = require('./utils/config')
 const express = require('express')
 const app = express()
+const Blog = require('./models/blog')
 const cors = require('cors')
 const morgan = require('morgan')
 const logger = require('./utils/logger')
-const mongoose = require('mongoose')
 const middleware = require('./utils/middleware')
+const mongoose = require('mongoose')
 
-const blogSchema = new mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: Number
-})
-
-const Blog = mongoose.model('Blog', blogSchema)
 
 logger.info('Connecting to MongoDB')
 
