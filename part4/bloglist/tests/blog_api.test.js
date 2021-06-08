@@ -42,7 +42,7 @@ beforeEach(async () => {
   await blogObject.save()
 })
 
-describe('blogs are returned in JSON format', () => {
+describe('blog format validation', () => {
   test('blogs are returned in JSON format', async () => {
     await api
       .get('/api/blogs')
@@ -54,7 +54,15 @@ describe('blogs are returned in JSON format', () => {
     const response = await api.get('/api/blogs')
     expect(response.body).toHaveLength(initialBlogs.length)
   })
+
+  test('each blog has its own ID', async () => {
+    const response = await api.get('/api/blogs')
+    response.body.forEach(blog => {
+      expect(blog.id).toBeDefined()
+    })
+  })
 })
+
 
 afterAll(() => {
   mongoose.connection.close()
