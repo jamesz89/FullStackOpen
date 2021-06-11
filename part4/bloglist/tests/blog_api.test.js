@@ -63,6 +63,33 @@ describe('blog format validation', () => {
   })
 })
 
+describe('blogs are created correctly', () => {
+  test('a new blog can be added', async () => {
+    
+    const newBlog = {
+      title: 'Api testing #1',
+      author: 'James',
+      url: 'http://blogapitest1.example.com',
+      likes: 100
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+    
+    expect(response.body.length).toBe(initialBlogs.length + 1)
+    
+    expect(response.body.slice(-1)[0].title).toBe(newBlog.title)
+    expect(response.body.slice(-1)[0].author).toBe(newBlog.author)
+    expect(response.body.slice(-1)[0].url).toBe(newBlog.url)
+    expect(response.body.slice(-1)[0].likes).toBe(newBlog.likes)
+  })
+})
+
 
 afterAll(() => {
   mongoose.connection.close()
