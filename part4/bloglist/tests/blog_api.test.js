@@ -89,7 +89,7 @@ describe('blogs are created correctly', () => {
     expect(response.body.slice(-1)[0].likes).toBe(newBlog.likes)
   })
 
-  test('new blog has property likes defined', async () => {
+  test('likes property defaults to zero when undefined', async () => {
     const newBlogWithNoLikes = {
       title: 'Api testing #1',
       author: 'James',
@@ -100,6 +100,18 @@ describe('blogs are created correctly', () => {
     if (newBlogWithNoLikes.likes === undefined) {
       expect(response.body.likes).toBe(0)
     }
+  })
+
+  test('blog fails to post when title and url are missing', async () => {
+    const incompleteBlog = {
+      author: 'James',
+      likes: 100
+    }
+    await api
+      .post('/api/blogs')
+      .send(incompleteBlog)
+      .expect(400)
+      .expect({ error: 'bad request' })
   })
 })
 
