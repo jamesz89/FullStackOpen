@@ -3,7 +3,7 @@ const Blog = require('../models/blog')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
-  response.json(blogs)  
+  response.json(blogs)
 })
 
 blogsRouter.post('/', async (request, response, next) => {
@@ -18,7 +18,40 @@ blogsRouter.post('/', async (request, response, next) => {
 
   try {
     const savedBlog = await blog.save()
-    response.status(201).json(savedBlog) 
+    response.status(201).json(savedBlog)
+  } catch (error) {
+    next(error)
+  }
+})
+
+blogsRouter.delete('/:id', async (request, response, next) => {
+  const id = request.params.id
+
+  try {
+    await Blog.findByIdAndDelete(id)
+    response.status(204).end()
+
+  } catch (error) {
+    next(error)
+  }
+
+})
+
+blogsRouter.put('/:id', async (request, response, next) => {
+  const id = request.params.id
+  const body = request.body
+
+  const blog = {
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes
+  }
+
+  try {
+    const updatedBlog = await Blog.findByIdAndUpdate(id, blog, { new: true })
+    response.json(updatedBlog)
+
   } catch (error) {
     next(error)
   }
