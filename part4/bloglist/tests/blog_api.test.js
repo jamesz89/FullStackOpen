@@ -90,14 +90,14 @@ describe('blogs are created correctly', () => {
   })
 
   test('new blog has property likes defined', async () => {
-    const newBlog = {
+    const newBlogWithNoLikes = {
       title: 'Api testing #1',
       author: 'James',
       url: 'http://blogapitest1.example.com',
     }
 
-    const response = await api.post('/api/blogs').send(newBlog)
-    if (newBlog.likes === undefined) {
+    const response = await api.post('/api/blogs').send(newBlogWithNoLikes)
+    if (newBlogWithNoLikes.likes === undefined) {
       expect(response.body.likes).toBe(0)
     }
   })
