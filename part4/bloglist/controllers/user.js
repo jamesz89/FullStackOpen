@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const {body, validationResult} = require('express-validator')
 
 usersRouter.get('/', async (request, response) => {
-  const users = await User.find({})
+  const users = await User.find({}).populate('blogs')
   response.json(users)
 })
 
