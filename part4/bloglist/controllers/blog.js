@@ -10,14 +10,17 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response, next) => {
   const body = request.body
-  const token = request.token
-  
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-  if(!token || !decodedToken.id) {
-    return response.status(401).json({error: 'token is missing or is invalid'})
+  if (request.token) {
+    try {
+      request.decodedToken = await jwt.verify(request.token, process.env.SECRET)
+    } catch(error){
+      next(error)
+    }
+  } else {
+    return response.status(401).json({error: 'token is missing'})
   }
-  
-  const user = await User.findById(decodedToken.id)
+
+  const user = await User.findById(request.decodedToken.id)
 
   const blog = new Blog({
     title: body.title,
@@ -39,15 +42,28 @@ blogsRouter.post('/', async (request, response, next) => {
 
 blogsRouter.delete('/:id', async (request, response, next) => {
   const id = request.params.id
+  const blog = await Blog.findById(id)
 
+  if (request.token) {
+    try {
+      request.decodedToken = await jwt.verify(request.token, process.env.SECRET)
+    } catch(error){
+      next(error)
+    }
+  } else {
+    return response.status(401).json({error: 'token is missing'})
+  }
+  
   try {
-    await Blog.findByIdAndDelete(id)
-    response.status(204).end()
-
+    if (blog.user.toString() === request.decodedToken.id.toString()) {
+      await Blog.findByIdAndDelete(id)
+      response.status(204).end()
+    } else {
+      return response.status(401).json({ error: 'you have no permission to do that' })
+    }
   } catch (error) {
     next(error)
   }
-
 })
 
 blogsRouter.put('/:id', async (request, response, next) => {
