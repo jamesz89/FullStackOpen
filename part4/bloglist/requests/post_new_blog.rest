@@ -3,8 +3,8 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJlbm5pYWsiLCJpZCI6IjYxNWM0OWVlNDQyOGEzMTgyYzY1ZGNjNiIsImlhdCI6MTYzNDA0MDY0NX0.KxGALmrBzUnuQqQC36spnA9eN6F3ImsVSIYjnL7tlBU
 
 {
-  "title": "Blog 5",
-  "author": "Dat Middleware",
-  "url": "http://blog5.example.com",
-  "likes": 1000
+  "title": "No se de que va esto",
+  "author": "Joelito 15",
+  "url": "http://blog8.example.com",
+  "likes"
 }
