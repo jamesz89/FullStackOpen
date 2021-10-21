@@ -3,12 +3,15 @@ import Blog from "./components/Blog";
 import BlogForm from "./components/BlogForm";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
+  const [message, setMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
@@ -25,6 +28,7 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (exception) {
+      displayErrorMessage('username or password is invalid')
       console.log(exception);
     }
   };
@@ -36,17 +40,31 @@ const App = () => {
     setUser(null);
   };
 
-  const handleTitleChange = (target) => {
+  const handleTitleChange = ({target}) => {
     setTitle(target.value);
   };
 
-  const handleAuthorChange = (target) => {
+  const handleAuthorChange = ({target}) => {
     setAuthor(target.value);
   };
 
-  const handleUrlChange = (target) => {
+  const handleUrlChange = ({target}) => {
     setUrl(target.value);
   };
+
+  const displayMessage = (message) => {
+    setMessage(message)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
+  }
+
+  const displayErrorMessage = (message) => {
+    setErrorMessage(message)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+  }
 
   const createBlog = async (event) => {
     event.preventDefault();
@@ -57,6 +75,7 @@ const App = () => {
       setTitle("");
       setAuthor("");
       setUrl("");
+      displayMessage(`A blog named "${title}" by ${author} has beed added`)
       console.log("new entry added");
     } catch (exception) {
       console.log(exception);
@@ -77,7 +96,7 @@ const App = () => {
     return (
       <div>
         <h2>log in to application</h2>
-
+        <Notification message={errorMessage} type='error'/>
         <form onSubmit={handleLogin}>
           <label>username</label>
           <input
@@ -116,6 +135,8 @@ const App = () => {
         handleUrlChange={handleUrlChange}
         createBlog={createBlog}
       />
+      <Notification message={errorMessage} type='error'/>
+      <Notification message={message} type='success'/>
       <br />
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
