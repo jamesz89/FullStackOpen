@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Blog from "./components/Blog";
+import BlogForm from "./components/BlogForm";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
@@ -8,12 +9,10 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [blogObject, setblogObject] = useState({
-    title: "",
-    author: "",
-    url: "",
-    likes: 0,
-  });
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
+  const [likes, setlikes] = useState(0);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -37,21 +36,27 @@ const App = () => {
     setUser(null);
   };
 
+  const handleTitleChange = (target) => {
+    setTitle(target.value);
+  };
+
+  const handleAuthorChange = (target) => {
+    setAuthor(target.value);
+  };
+
+  const handleUrlChange = (target) => {
+    setUrl(target.value);
+  };
+
   const createBlog = async (event) => {
     event.preventDefault();
     try {
       console.log("adding blog to list");
-      const newBlog = await blogService.create(blogObject);
+      const newBlog = await blogService.create({ title, author, url, likes });
       setBlogs(blogs.concat(newBlog));
-      setblogObject((prevState) => {
-        return { ...prevState, title: "" };
-      });
-      setblogObject((prevState) => {
-        return { ...prevState, author: "" };
-      });
-      setblogObject((prevState) => {
-        return { ...prevState, url: "" };
-      });
+      setTitle("");
+      setAuthor("");
+      setUrl("");
       console.log("new entry added");
     } catch (exception) {
       console.log(exception);
@@ -102,46 +107,15 @@ const App = () => {
       <button type="submit" onClick={handleLogout}>
         logout
       </button>
-      <form onSubmit={createBlog}>
-        <h2>Create new entry</h2>
-        <label name="title">title</label>
-        <input
-          type="text"
-          name="title"
-          value={blogObject.title}
-          onChange={({ target }) =>
-            setblogObject((prevState) => {
-              return { ...prevState, title: target.value };
-            })
-          }
-        />
-        <br />
-        <label name="author">author</label>
-        <input
-          type="text"
-          name="author"
-          value={blogObject.author}
-          onChange={({ target }) =>
-            setblogObject((prevState) => {
-              return { ...prevState, author: target.value };
-            })
-          }
-        />
-        <br />
-        <label name="url">url </label>
-        <input
-          type="text"
-          name="url"
-          value={blogObject.url}
-          onChange={({ target }) =>
-            setblogObject((prevState) => {
-              return { ...prevState, url: target.value };
-            })
-          }
-        />
-        <br />
-        <button type="submit">create</button>
-      </form>
+      <BlogForm
+        title={title}
+        author={author}
+        url={url}
+        handleTitleChange={handleTitleChange}
+        handleAuthorChange={handleAuthorChange}
+        handleUrlChange={handleUrlChange}
+        createBlog={createBlog}
+      />
       <br />
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
