@@ -10,12 +10,13 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [message, setMessage] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [message, setMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
   const [likes, setlikes] = useState(0);
+  const [blogFormVisible, setBlogFormVisible] = useState(false);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -28,7 +29,7 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (exception) {
-      displayErrorMessage('username or password is invalid')
+      displayErrorMessage("username or password is invalid");
       console.log(exception);
     }
   };
@@ -40,31 +41,36 @@ const App = () => {
     setUser(null);
   };
 
-  const handleTitleChange = ({target}) => {
+  const handleTitleChange = ({ target }) => {
     setTitle(target.value);
   };
 
-  const handleAuthorChange = ({target}) => {
+  const handleAuthorChange = ({ target }) => {
     setAuthor(target.value);
   };
 
-  const handleUrlChange = ({target}) => {
+  const handleUrlChange = ({ target }) => {
     setUrl(target.value);
   };
 
   const displayMessage = (message) => {
-    setMessage(message)
+    setMessage(message);
     setTimeout(() => {
-      setMessage(null)
-    }, 5000)
-  }
+      setMessage(null);
+    }, 5000);
+  };
 
   const displayErrorMessage = (message) => {
-    setErrorMessage(message)
+    setErrorMessage(message);
     setTimeout(() => {
-      setErrorMessage(null)
-    }, 5000)
-  }
+      setErrorMessage(null);
+    }, 5000);
+  };
+
+  const handleBlogFormVisibility = (event) => {
+    event.preventDefault();
+    setBlogFormVisible(!blogFormVisible);
+  };
 
   const createBlog = async (event) => {
     event.preventDefault();
@@ -75,7 +81,7 @@ const App = () => {
       setTitle("");
       setAuthor("");
       setUrl("");
-      displayMessage(`A blog named "${title}" by ${author} has beed added`)
+      displayMessage(`A blog named "${title}" by ${author} has beed added`);
       console.log("new entry added");
     } catch (exception) {
       console.log(exception);
@@ -96,7 +102,7 @@ const App = () => {
     return (
       <div>
         <h2>log in to application</h2>
-        <Notification message={errorMessage} type='error'/>
+        <Notification message={errorMessage} type="error" />
         <form onSubmit={handleLogin}>
           <label>username</label>
           <input
@@ -126,6 +132,7 @@ const App = () => {
       <button type="submit" onClick={handleLogout}>
         logout
       </button>
+
       <BlogForm
         title={title}
         author={author}
@@ -133,10 +140,12 @@ const App = () => {
         handleTitleChange={handleTitleChange}
         handleAuthorChange={handleAuthorChange}
         handleUrlChange={handleUrlChange}
+        handleBlogFormVisibility={handleBlogFormVisibility}
         createBlog={createBlog}
+        blogFormVisible={blogFormVisible}
       />
-      <Notification message={errorMessage} type='error'/>
-      <Notification message={message} type='success'/>
+      <Notification message={errorMessage} type="error" />
+      <Notification message={message} type="success" />
       <br />
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
@@ -144,5 +153,4 @@ const App = () => {
     </div>
   );
 };
-
 export default App;
