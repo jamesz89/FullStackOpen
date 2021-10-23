@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import BlogForm from "./components/BlogForm";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
+import Togglable from "./components/Togglable";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -16,7 +17,6 @@ const App = () => {
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
   const [likes, setlikes] = useState(0);
-  const [blogFormVisible, setBlogFormVisible] = useState(false);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -67,22 +67,20 @@ const App = () => {
     }, 5000);
   };
 
-  const handleBlogFormVisibility = (event) => {
-    event.preventDefault();
-    setBlogFormVisible(!blogFormVisible);
-  };
+  const togglableRef = useRef()
 
   const createBlog = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     try {
       console.log("adding blog to list");
+      togglableRef.current.toggleVisibility()
       const newBlog = await blogService.create({ title, author, url, likes });
       setBlogs(blogs.concat(newBlog));
       setTitle("");
       setAuthor("");
       setUrl("");
-      displayMessage(`A blog named "${title}" by ${author} has beed added`);
       console.log("new entry added");
+      displayMessage(`A blog named "${title}" by ${author} has beed added`);
     } catch (exception) {
       console.log(exception);
     }
@@ -132,7 +130,7 @@ const App = () => {
       <button type="submit" onClick={handleLogout}>
         logout
       </button>
-
+      <Togglable buttonLabel="create a new blog" ref={togglableRef}>
       <BlogForm
         title={title}
         author={author}
@@ -140,10 +138,9 @@ const App = () => {
         handleTitleChange={handleTitleChange}
         handleAuthorChange={handleAuthorChange}
         handleUrlChange={handleUrlChange}
-        handleBlogFormVisibility={handleBlogFormVisibility}
         createBlog={createBlog}
-        blogFormVisible={blogFormVisible}
       />
+      </Togglable>
       <Notification message={errorMessage} type="error" />
       <Notification message={message} type="success" />
       <br />
