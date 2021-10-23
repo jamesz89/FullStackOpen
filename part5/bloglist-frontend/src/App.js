@@ -13,6 +13,7 @@ const App = () => {
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
   const [likes, setlikes] = useState(0);
+  const [blogFormVisible, setBlogFormVisible] = useState(false)
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -48,6 +49,11 @@ const App = () => {
     setUrl(target.value);
   };
 
+  const handleBlogFormVisibility = (event) => {
+    event.preventDefault()
+    setBlogFormVisible(!blogFormVisible)
+  }
+
   const createBlog = async (event) => {
     event.preventDefault();
     try {
@@ -63,6 +69,7 @@ const App = () => {
     }
   };
 
+
   useEffect(() => {
     const loggedUserToken = window.localStorage.getItem("loggedBlogAppUser");
     if (loggedUserToken) {
@@ -77,7 +84,6 @@ const App = () => {
     return (
       <div>
         <h2>log in to application</h2>
-
         <form onSubmit={handleLogin}>
           <label>username</label>
           <input
@@ -107,6 +113,7 @@ const App = () => {
       <button type="submit" onClick={handleLogout}>
         logout
       </button>
+      
       <BlogForm
         title={title}
         author={author}
@@ -114,7 +121,9 @@ const App = () => {
         handleTitleChange={handleTitleChange}
         handleAuthorChange={handleAuthorChange}
         handleUrlChange={handleUrlChange}
+        handleBlogFormVisibility={handleBlogFormVisibility}
         createBlog={createBlog}
+        blogFormVisible={blogFormVisible}
       />
       <br />
       {blogs.map((blog) => (
