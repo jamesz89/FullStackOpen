@@ -1,16 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 
-const BlogForm = ({
-  createBlog,
-  handleTitleChange,
-  handleAuthorChange,
-  handleUrlChange,
-  title,
-  author,
-  url,
-}) => {
+const BlogForm = ({ createBlog }) => {
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
+  const [likes, setlikes] = useState(0);
+
+  const handleTitleChange = ({ target }) => {
+    setTitle(target.value);
+  };
+
+  const handleAuthorChange = ({ target }) => {
+    setAuthor(target.value);
+  };
+
+  const handleUrlChange = ({ target }) => {
+    setUrl(target.value);
+  };
+
+  const createNewBlog = (event) => {
+    event.preventDefault();
+    createBlog({ title, author, url, likes });
+    setTitle("");
+    setAuthor("");
+    setUrl("");
+  };
+
   return (
-    <form onSubmit={createBlog}>
+    <form onSubmit={createNewBlog}>
       <h2>Create new entry</h2>
       <label name="title">title</label>
       <input

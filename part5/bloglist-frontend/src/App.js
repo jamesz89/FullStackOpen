@@ -13,10 +13,6 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
-  const [likes, setlikes] = useState(0);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -41,18 +37,6 @@ const App = () => {
     setUser(null);
   };
 
-  const handleTitleChange = ({ target }) => {
-    setTitle(target.value);
-  };
-
-  const handleAuthorChange = ({ target }) => {
-    setAuthor(target.value);
-  };
-
-  const handleUrlChange = ({ target }) => {
-    setUrl(target.value);
-  };
-
   const displayMessage = (message) => {
     setMessage(message);
     setTimeout(() => {
@@ -67,22 +51,19 @@ const App = () => {
     }, 5000);
   };
 
-  const togglableRef = useRef()
+  const togglableRef = useRef();
 
-  const createBlog = async (event) => {
-    event.preventDefault()
+  const createBlog = async (newBlog) => {
     try {
       console.log("adding blog to list");
-      togglableRef.current.toggleVisibility()
-      const newBlog = await blogService.create({ title, author, url, likes });
+      togglableRef.current.toggleVisibility();
+      await blogService.create(newBlog);
       setBlogs(blogs.concat(newBlog));
-      setTitle("");
-      setAuthor("");
-      setUrl("");
       console.log("new entry added");
-      displayMessage(`A blog named "${title}" by ${author} has beed added`);
+      displayMessage(`A blog named "${newBlog.title}" by ${newBlog.author} has beed added`);
     } catch (exception) {
-      console.log(exception);
+      console.log(exception)
+      displayErrorMessage('fill all the fields')
     }
   };
 
@@ -131,15 +112,7 @@ const App = () => {
         logout
       </button>
       <Togglable buttonLabel="create a new blog" ref={togglableRef}>
-      <BlogForm
-        title={title}
-        author={author}
-        url={url}
-        handleTitleChange={handleTitleChange}
-        handleAuthorChange={handleAuthorChange}
-        handleUrlChange={handleUrlChange}
-        createBlog={createBlog}
-      />
+        <BlogForm createBlog={createBlog} />
       </Togglable>
       <Notification message={errorMessage} type="error" />
       <Notification message={message} type="success" />
