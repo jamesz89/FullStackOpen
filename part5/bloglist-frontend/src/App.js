@@ -20,7 +20,8 @@ const App = () => {
       const user = await loginService.login({ username, password });
       window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
       blogService.setToken(user.token);
-      blogService.getAll().then((blogs) => setBlogs(blogs));
+      const blogs = await blogService.getAll();
+      setBlogs(blogs);
       setUser(user);
       setUsername("");
       setPassword("");
@@ -60,11 +61,26 @@ const App = () => {
       await blogService.create(newBlog);
       setBlogs(blogs.concat(newBlog));
       console.log("new entry added");
-      displayMessage(`A blog named "${newBlog.title}" by ${newBlog.author} has beed added`);
+      displayMessage(
+        `A blog named "${newBlog.title}" by ${newBlog.author} has beed added`
+      );
     } catch (exception) {
-      console.log(exception)
-      displayErrorMessage('fill all the fields')
+      console.log(exception);
+      displayErrorMessage("fill all the fields");
     }
+  };
+
+  const updateBlog = async (blogtoUpdate) => {
+    const id = blogtoUpdate.id;
+    const blogObject = {
+      title: blogtoUpdate.title,
+      author: blogtoUpdate.author,
+      url: blogtoUpdate.url,
+      likes: blogtoUpdate.likes,
+    };
+    const updatedBlog = await blogService.update(id, blogObject);
+    console.log(updatedBlog);
+    //find a way to update the likes in the UI
   };
 
   useEffect(() => {
@@ -118,7 +134,7 @@ const App = () => {
       <Notification message={message} type="success" />
       <br />
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
       ))}
     </div>
   );
