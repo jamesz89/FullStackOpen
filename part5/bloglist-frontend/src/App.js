@@ -78,9 +78,7 @@ const App = () => {
       url: blogtoUpdate.url,
       likes: blogtoUpdate.likes,
     };
-    const updatedBlog = await blogService.update(id, blogObject);
-    console.log(updatedBlog);
-    //find a way to update the likes in the UI
+    await blogService.update(id, blogObject);
   };
 
   useEffect(() => {
@@ -134,7 +132,13 @@ const App = () => {
       <Notification message={message} type="success" />
       <br />
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          updateBlog={updateBlog}
+          blogs={blogs}
+          setBlogs={setBlogs}
+        />
       ))}
     </div>
   );

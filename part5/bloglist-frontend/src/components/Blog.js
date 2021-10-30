@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-const Blog = ({ blog, updateBlog }) => {
+const Blog = ({ blog, updateBlog, blogs, setBlogs }) => {
   const [showDetails, setShowDetails] = useState(false);
   const blogStyle = {
     paddingTop: 10,
@@ -19,6 +19,12 @@ const Blog = ({ blog, updateBlog }) => {
       url: blog.url,
       likes: blog.likes + 1,
     };
+    const updatedBlogs = [...blogs];
+    const blogIndex = updatedBlogs.findIndex(
+      (currentBlog) => currentBlog.id === blog.id
+    );
+    updatedBlogs.splice(blogIndex, 1, blogToUpdate);
+    setBlogs(updatedBlogs);
     updateBlog(blogToUpdate);
   };
 
