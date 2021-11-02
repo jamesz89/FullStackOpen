@@ -81,6 +81,10 @@ const App = () => {
     await blogService.update(id, blogObject);
   };
 
+  const deleteBlog = async (id) => {
+    await blogService.remove(id);
+  };
+
   useEffect(() => {
     const loggedUserToken = window.localStorage.getItem("loggedBlogAppUser");
     if (loggedUserToken) {
@@ -91,7 +95,7 @@ const App = () => {
     }
   }, []);
 
-  const sortedBlogs = [...blogs].sort((a,b) => b.likes - a.likes)
+  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
 
   if (user === null) {
     return (
@@ -124,7 +128,9 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
-      <p>{user.name} is logged in</p>
+      <p>
+        {user.name} ({user.username}) is logged in
+      </p>
       <button type="submit" onClick={handleLogout}>
         logout
       </button>
@@ -134,15 +140,14 @@ const App = () => {
       <Notification message={errorMessage} type="error" />
       <Notification message={message} type="success" />
       <br />
-      {
-      sortedBlogs
-      .map((blog) => (
+      {sortedBlogs.map((blog) => (
         <Blog
           key={blog.id}
           blog={blog}
           updateBlog={updateBlog}
           blogs={blogs}
           setBlogs={setBlogs}
+          deleteBlog={deleteBlog}
         />
       ))}
     </div>
