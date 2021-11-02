@@ -81,11 +81,6 @@ const App = () => {
     await blogService.update(id, blogObject);
   };
 
-  const deleteBlog = async (id) => {
-    await blogService.remove(id)
-    console.log('blog has been deleted')
-  }
-
   useEffect(() => {
     const loggedUserToken = window.localStorage.getItem("loggedBlogAppUser");
     if (loggedUserToken) {
@@ -146,10 +141,8 @@ const App = () => {
           key={blog.id}
           blog={blog}
           updateBlog={updateBlog}
-          deleteBlog={deleteBlog}
           blogs={blogs}
           setBlogs={setBlogs}
-          user={user}
         />
       ))}
     </div>
