@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-const Blog = ({ blog, updateBlog, blogs, setBlogs, deleteBlog, username }) => {
+import PropTypes from 'prop-types'
+
+const Blog = ({ blog, handleUpdateBlog, blogs, setBlogs, handleDeleteBlog }) => {
   const [showDetails, setShowDetails] = useState(false);
   const blogStyle = {
     paddingTop: 10,
@@ -25,7 +27,7 @@ const Blog = ({ blog, updateBlog, blogs, setBlogs, deleteBlog, username }) => {
     );
     updatedBlogs.splice(blogIndex, 1, blogToUpdate);
     setBlogs(updatedBlogs);
-    updateBlog(blogToUpdate);
+    handleUpdateBlog(blogToUpdate);
   };
 
   const removeBlog = () => {
@@ -35,7 +37,7 @@ const Blog = ({ blog, updateBlog, blogs, setBlogs, deleteBlog, username }) => {
     );
     updatedBlogs.splice(blogIndex, 1);
     setBlogs(updatedBlogs);
-    deleteBlog(blog.id);
+    handleDeleteBlog(blog.id);
   };
 
   return (
@@ -59,5 +61,13 @@ const Blog = ({ blog, updateBlog, blogs, setBlogs, deleteBlog, username }) => {
     </div>
   );
 };
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  handleUpdateBlog: PropTypes.func.isRequired, 
+  blogs: PropTypes.array.isRequired, 
+  setBlogs:PropTypes.func.isRequired, 
+  handleDeleteBlog: PropTypes.func.isRequired
+}
 
 export default Blog;

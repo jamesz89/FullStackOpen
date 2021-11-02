@@ -144,10 +144,10 @@ const App = () => {
         <Blog
           key={blog.id}
           blog={blog}
-          updateBlog={updateBlog}
+          handleUpdateBlog={updateBlog}
           blogs={blogs}
           setBlogs={setBlogs}
-          deleteBlog={deleteBlog}
+          handleDeleteBlog={deleteBlog}
         />
       ))}
     </div>
