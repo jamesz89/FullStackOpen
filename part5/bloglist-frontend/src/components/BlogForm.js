@@ -4,7 +4,6 @@ const BlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
-  const [likes, setlikes] = useState(0);
 
   const handleTitleChange = ({ target }) => {
     setTitle(target.value);
@@ -20,7 +19,7 @@ const BlogForm = ({ createBlog }) => {
 
   const createNewBlog = (event) => {
     event.preventDefault();
-    createBlog({ title, author, url, likes });
+    createBlog({ title, author, url, likes: 0 });
     setTitle("");
     setAuthor("");
     setUrl("");

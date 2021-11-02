@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-const Blog = ({ blog, updateBlog, blogs, setBlogs }) => {
+const Blog = ({ blog, updateBlog, deleteBlog, blogs, setBlogs, user }) => {
   const [showDetails, setShowDetails] = useState(false);
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -28,6 +29,18 @@ const Blog = ({ blog, updateBlog, blogs, setBlogs }) => {
     updateBlog(blogToUpdate);
   };
 
+  const removeBlog = () => {
+    const updatedBlogs = [...blogs];
+    const blogIndex = updatedBlogs.findIndex(
+      (currentBlog) => currentBlog.id === blog.id
+    );
+    if (window.confirm(`Do you want to delete the blog "${blog.title}?`)) {
+      updatedBlogs.splice(blogIndex, 1);
+      setBlogs(updatedBlogs);
+      deleteBlog(blog.id);
+    }
+  };
+
   return (
     <div style={blogStyle}>
       <div>
@@ -42,6 +55,8 @@ const Blog = ({ blog, updateBlog, blogs, setBlogs }) => {
           <button onClick={addLike}>like</button>
           <br />
           <span>{blog.author}</span>
+          <br />
+          {blog.user.username === user.username ? <button onClick={removeBlog}>remove</button> : null}
         </div>
       </div>
     </div>
