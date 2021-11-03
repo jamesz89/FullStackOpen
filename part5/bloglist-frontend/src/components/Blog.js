@@ -43,17 +43,16 @@ const Blog = ({ blog, handleUpdateBlog, blogs, setBlogs, handleDeleteBlog }) => 
   return (
     <div style={blogStyle}>
       <div>
-        <span>{blog.title}</span>
+        <span className='title'>{blog.title}</span>
+        <span className='author'> by {blog.author} </span>
         <button onClick={() => setShowDetails(!showDetails)}>
           {showDetails ? 'hide' : 'show'}
         </button>
-        <div style={showWhenVisible}>
+        <div className='blog-details' style={showWhenVisible}>
           <span>{blog.url}</span>
           <br />
           <span>{blog.likes} likes </span>
           <button onClick={addLike}>like</button>
-          <br />
-          <span>{blog.author}</span>
           <br />
           <button onClick={removeBlog}>remove</button>
         </div>
