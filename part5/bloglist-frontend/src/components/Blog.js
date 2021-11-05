@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 
 const Blog = ({ blog, handleUpdateBlog, blogs, setBlogs, handleDeleteBlog }) => {
   const [showDetails, setShowDetails] = useState(false)
@@ -52,7 +52,7 @@ const Blog = ({ blog, handleUpdateBlog, blogs, setBlogs, handleDeleteBlog }) => 
           <span>{blog.url}</span>
           <br />
           <span>{blog.likes} likes </span>
-          <button onClick={addLike}>like</button>
+          <button className='btn-like' onClick={addLike}>like</button>
           <br />
           <button onClick={removeBlog}>remove</button>
         </div>
@@ -61,12 +61,12 @@ const Blog = ({ blog, handleUpdateBlog, blogs, setBlogs, handleDeleteBlog }) => 
   )
 }
 
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  handleUpdateBlog: PropTypes.func.isRequired,
-  blogs: PropTypes.array.isRequired,
-  setBlogs:PropTypes.func.isRequired,
-  handleDeleteBlog: PropTypes.func.isRequired
-}
+// Blog.propTypes = {
+//   blog: PropTypes.object.isRequired,
+//   handleUpdateBlog: PropTypes.func.isRequired,
+//   blogs: PropTypes.array.isRequired,
+//   setBlogs:PropTypes.func.isRequired,
+//   handleDeleteBlog: PropTypes.func.isRequired
+// }
 
 export default Blog
