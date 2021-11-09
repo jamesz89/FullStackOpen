@@ -104,7 +104,7 @@ const App = () => {
         <Notification message={errorMessage} type="error" />
         <form onSubmit={handleLogin}>
           <label>username</label>
-          <input
+          <input id="username"
             type="text"
             name="Username"
             value={username}
@@ -112,7 +112,7 @@ const App = () => {
           />
           <br />
           <label>password</label>
-          <input
+          <input id="password"
             type="password"
             name="Password"
             value={password}
