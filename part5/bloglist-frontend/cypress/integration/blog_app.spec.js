@@ -32,4 +32,22 @@ describe('Blog app', function() {
     })
   })
 
+  describe('When logged in', function(){
+    beforeEach(function(){
+      cy.request('POST', 'http://localhost:3003/api/login', {username:'test', password: 'test123'})
+      cy.get('#username').type('test')
+      cy.get('#password').type('test123')
+      cy.contains('login').click()
+    })
+    
+    it('a blog can be created', function(){
+      cy.get('#create').click()
+      cy.get('#title').type('Un blog creado por Cypress')
+      cy.get('#author').type('Cypress')
+      cy.get('#url').type('https://www.unaprueba.com')
+      cy.get('#save').click()
+      cy.get('.title').should('have.text', 'Un blog creado por Cypress')
+    })
+  })
+
 })
