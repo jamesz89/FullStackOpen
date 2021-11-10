@@ -58,8 +58,8 @@ const App = () => {
     try {
       console.log('adding blog to list')
       togglableRef.current.toggleVisibility()
-      await blogService.create(newBlog)
-      setBlogs(blogs.concat(newBlog))
+      const createdBlog = await blogService.create(newBlog)
+      setBlogs(blogs.concat(createdBlog))
       console.log('new entry added')
       displayMessage(
         `A blog named "${newBlog.title}" by ${newBlog.author} has beed added`
@@ -140,16 +140,18 @@ const App = () => {
       <Notification message={errorMessage} type="error" />
       <Notification message={message} type="success" />
       <br />
-      {sortedBlogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleUpdateBlog={updateBlog}
-          blogs={blogs}
-          setBlogs={setBlogs}
-          handleDeleteBlog={deleteBlog}
-        />
-      ))}
+      <div className="bloglist">
+        {sortedBlogs.map((blog) => (
+          <Blog
+            key={blog.id}
+            blog={blog}
+            handleUpdateBlog={updateBlog}
+            blogs={blogs}
+            setBlogs={setBlogs}
+            handleDeleteBlog={deleteBlog}
+          />
+        ))}
+      </div>
     </div>
   )
 }
