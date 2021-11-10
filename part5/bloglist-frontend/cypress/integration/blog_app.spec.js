@@ -39,7 +39,7 @@ describe('Blog app', function() {
       cy.get('#password').type('test123')
       cy.contains('login').click()
     })
-    
+
     it('a blog can be created', function(){
       cy.get('#create').click()
       cy.get('#title').type('Un blog creado por Cypress')
@@ -47,6 +47,19 @@ describe('Blog app', function() {
       cy.get('#url').type('https://www.unaprueba.com')
       cy.get('#save').click()
       cy.get('.title').should('have.text', 'Un blog creado por Cypress')
+    })
+
+    it('a blog can be liked', function(){
+      cy.get('#create').click()
+      cy.get('#title').type('Un blog creado por Cypress')
+      cy.get('#author').type('Cypress')
+      cy.get('#url').type('https://www.unaprueba.com')
+      cy.get('#save').click()
+      cy.get('.title').should('have.text', 'Un blog creado por Cypress')
+      cy.contains('show').click()
+      cy.get('.btn-like').click()
+      cy.get('#likes').should('include.text', '1')
+
     })
   })
 
