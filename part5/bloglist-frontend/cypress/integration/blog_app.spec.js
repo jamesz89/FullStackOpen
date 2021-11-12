@@ -34,10 +34,7 @@ describe('Blog app', function() {
 
   describe('When logged in', function(){
     beforeEach(function(){
-      cy.request('POST', 'http://localhost:3003/api/login', { username:'test', password: 'test123' })
-      cy.get('#username').type('test')
-      cy.get('#password').type('test123')
-      cy.contains('login').click()
+      cy.login({ username: 'test', password: 'test123' })
     })
 
     it('a blog can be created', function(){
@@ -49,26 +46,30 @@ describe('Blog app', function() {
       cy.get('.title').should('have.text', 'Un blog creado por Cypress')
     })
 
-    it('a blog can be liked', function(){
-      cy.get('#create').click()
-      cy.get('#title').type('Un blog creado por Cypress')
-      cy.get('#author').type('Cypress')
-      cy.get('#url').type('https://www.unaprueba.com')
-      cy.get('#save').click()
-      cy.contains('show').click()
-      cy.get('.btn-like').click()
-      cy.get('#likes').should('include.text', '1')
-    })
+    describe('and a blog exists', function(){
+      beforeEach(function(){
+        cy.createBlog({
+          title: 'Test1',
+          author: 'Cypress',
+          url: 'http://www.test1.com',
+          likes: 0
+        })
+      })
 
-    it('a blog can be deleted', function(){
-      cy.get('#create').click()
-      cy.get('#title').type('Un blog creado por Cypress')
-      cy.get('#author').type('Cypress')
-      cy.get('#url').type('https://www.unaprueba.com')
-      cy.get('#save').click()
-      cy.contains('show').click()
-      cy.contains('remove').click()
-      cy.get('.title').should('not.exist')
+      it('it can be liked', function(){
+        cy.contains('show').click()
+        cy.get('.btn-like').click()
+        cy.get('#likes').should('include.text', '1')
+      })
+
+      it('it can be deleted', function(){
+        cy.contains('show').click()
+        cy.contains('remove').click()
+        cy.get('.title').should('not.exist')
+      })
     })
+    // it('blogs are ordered by number of likes', function(){
+
+    // })
   })
 })
