@@ -59,7 +59,7 @@ describe('Blog app', function() {
       it('it can be liked', function(){
         cy.contains('show').click()
         cy.get('.btn-like').click()
-        cy.get('#likes').should('include.text', '1')
+        cy.get('.likes').should('include.text', '1')
       })
 
       it('it can be deleted', function(){
@@ -68,8 +68,34 @@ describe('Blog app', function() {
         cy.get('.title').should('not.exist')
       })
     })
-    // it('blogs are ordered by number of likes', function(){
+    describe('and there are several blogs', function(){
+      beforeEach(function(){
+        cy.createBlog({
+          title: 'Test1',
+          author: 'Cypress',
+          url: 'http://www.test1.com',
+          likes: 10
+        })
+        cy.createBlog({
+          title: 'Test2',
+          author: 'Cypress',
+          url: 'http://www.test2.com',
+          likes: 50
+        })
+        cy.createBlog({
+          title: 'Test3',
+          author: 'Cypress',
+          url: 'http://www.test3.com',
+          likes: 25
+        })
+      })
 
-    // })
+      it('are sorted by number of likes', function(){
+        cy.get('.blog .likes').then($blogs => {
+          let amountOfLikes = [...$blogs].map(blog => blog.innerText)
+          expect(amountOfLikes).to.deep.equal([...amountOfLikes].sort((a,b) => b - a))
+        })
+      })
+    })
   })
 })

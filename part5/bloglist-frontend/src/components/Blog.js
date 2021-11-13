@@ -41,7 +41,7 @@ const Blog = ({ blog, handleUpdateBlog, blogs, setBlogs, handleDeleteBlog }) => 
   }
 
   return (
-    <div style={blogStyle}>
+    <div className="blog" style={blogStyle}>
       <div>
         <span className='title'>{blog.title}</span>
         <span className='author'> by {blog.author} </span>
@@ -51,7 +51,8 @@ const Blog = ({ blog, handleUpdateBlog, blogs, setBlogs, handleDeleteBlog }) => 
         <div className='blog-details' style={showWhenVisible}>
           <span>{blog.url}</span>
           <br />
-          <span id="likes">{blog.likes} likes </span>
+          <span className="likes">{blog.likes}</span>
+          <span>likes</span>
           <button className='btn-like' onClick={addLike}>like</button>
           <br />
           <button onClick={removeBlog}>remove</button>
