@@ -1,12 +1,25 @@
-const initialState = 'Testing reducer';
+const initialState = '';
+
+export const displayNotification = (message) => {
+  return {
+    type: 'SET_NOTIFICATION',
+    message
+  }
+}
+
+export const hideNotification = () => {
+  return {
+    type: 'CLEAR_NOTIFICATION',
+  }
+}
 
 const notificationReducer = (state = initialState, action) => {
-  console.log("state now: ", state);
-  console.log("action", action);
   switch (action.type) {
     case "SET_NOTIFICATION": {
-      const newState = action.message;
-      return newState;
+      return action.message;
+    }
+    case 'CLEAR_NOTIFICATION': {
+      return ''
     }
     default:
       return state;
