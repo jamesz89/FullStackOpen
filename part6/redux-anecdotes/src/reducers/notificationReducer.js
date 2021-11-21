@@ -1,5 +1,3 @@
-const initialState = '';
-
 export const displayNotification = (message) => {
   return {
     type: 'SET_NOTIFICATION',
@@ -13,7 +11,7 @@ export const hideNotification = () => {
   }
 }
 
-const notificationReducer = (state = initialState, action) => {
+const notificationReducer = (state = '', action) => {
   switch (action.type) {
     case "SET_NOTIFICATION": {
       return action.message;
