@@ -1,10 +1,7 @@
 import React, { useEffect } from "react";
 import { voteAnecdote } from "../reducers/anecdoteReducer";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  displayNotification,
-  hideNotification,
-} from "../reducers/notificationReducer";
+import { setNotification } from "../reducers/notificationReducer";
 import { initializeAnecdotes } from "../reducers/anecdoteReducer";
 
 const AnecdoteList = () => {
@@ -19,15 +16,7 @@ const AnecdoteList = () => {
 
   const vote = (anecdote) => {
     dispatch(voteAnecdote(anecdote));
-    dispatch(
-      displayNotification({
-        message: `You have upvoted "${anecdote.content}"`,
-        visibility: true,
-      })
-    );
-    setTimeout(() => {
-      dispatch(hideNotification({ message: "", visibility: false }));
-    }, 5000);
+    dispatch(setNotification(`You have upvoted "${anecdote.content}"`, 5));
   };
 
   return (
@@ -37,9 +26,7 @@ const AnecdoteList = () => {
           <div>{anecdote.content}</div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote)}>
-              vote
-            </button>
+            <button onClick={() => vote(anecdote)}>vote</button>
           </div>
         </div>
       ))}
