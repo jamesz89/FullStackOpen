@@ -5,7 +5,6 @@ import {
   displayNotification,
   hideNotification,
 } from "../reducers/notificationReducer";
-import anecdoteService from '../services/anecdotes'
 import { initializeAnecdotes } from "../reducers/anecdoteReducer";
 
 const AnecdoteList = () => {
@@ -15,17 +14,19 @@ const AnecdoteList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    anecdoteService.getAll().then(anecdotes => dispatch (initializeAnecdotes(anecdotes)))
-  }, [dispatch])
+    dispatch(initializeAnecdotes());
+  }, [dispatch]);
 
   const vote = (id, content) => {
     dispatch(voteAnecdote(id));
-    dispatch(displayNotification({
-      message: `You have upvoted "${content}"`,
-      visibility: true
-    }));
+    dispatch(
+      displayNotification({
+        message: `You have upvoted "${content}"`,
+        visibility: true,
+      })
+    );
     setTimeout(() => {
-      dispatch(hideNotification({message: '', visibility: false}));
+      dispatch(hideNotification({ message: "", visibility: false }));
     }, 5000);
   };
 
