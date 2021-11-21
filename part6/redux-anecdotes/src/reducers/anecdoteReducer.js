@@ -51,11 +51,19 @@ export const createAnecdote = (content) => {
   }
 };
 
-export const voteAnecdote = (id) => {
-  return {
-    type: "VOTE",
-    id,
-  };
+export const voteAnecdote = (anecdote) => {
+  const newAnecdote = {
+    content: anecdote.content,
+    id: anecdote.id,
+    votes: anecdote.votes + 1
+  }
+  return async dispatch => {
+    await anecdoteService.update(newAnecdote)
+    dispatch({
+      type: 'VOTE',
+      id: anecdote.id
+    })
+  }
 };
 
 
