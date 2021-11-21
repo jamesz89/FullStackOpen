@@ -29,6 +29,8 @@ const anecdoteReducer = (state = [], action) => {
   }
 };
 
+const getId = () => (100000 * Math.random()).toFixed(0)
+
 export const initializeAnecdotes = () => {
   return async dispatch => {
     const anecdotes = await anecdoteService.getAll()
@@ -39,11 +41,14 @@ export const initializeAnecdotes = () => {
   };
 }
   
-export const createAnecdote = (data) => {
-  return {
-    type: "ADD_ANECDOTE",
-    data
-  };
+export const createAnecdote = (content) => {
+  return async dispatch => {
+    const data = await anecdoteService.create({content, id: getId(), votes: 0})
+    dispatch({
+      type: 'ADD_ANECDOTE',
+      data
+    })
+  }
 };
 
 export const voteAnecdote = (id) => {

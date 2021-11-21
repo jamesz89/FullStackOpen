@@ -1,32 +1,28 @@
 import React from "react";
-import { createAnecdote } from '../reducers/anecdoteReducer'
-import { useDispatch } from 'react-redux'
+import { createAnecdote } from "../reducers/anecdoteReducer";
+import { useDispatch } from "react-redux";
 import {
   displayNotification,
   hideNotification,
 } from "../reducers/notificationReducer";
-import anecdoteService from "../services/anecdotes";
 
 const AnecdoteForm = () => {
-  const dispatch = useDispatch()
-
-  const getId = () => (100000 * Math.random()).toFixed(0);
-
-  const addNote = async (event) => {
-    event.preventDefault()
-    const newAnecdote = {
-      content: event.target.anecdote.value,
-      id: getId(),
-      votes: 0
-    } 
-    event.target.anecdote.value = ''
-    await anecdoteService.create(newAnecdote)
-    dispatch(createAnecdote(newAnecdote))
-    dispatch(displayNotification({message: 'A new anecdote has been added', visibility: true}));
+  const dispatch = useDispatch();
+  const addNote = (event) => {
+    event.preventDefault();
+    const content = event.target.anecdote.value;
+    event.target.anecdote.value = "";
+    dispatch(createAnecdote(content));
+    dispatch(
+      displayNotification({
+        message: "A new anecdote has been added",
+        visibility: true,
+      })
+    );
     setTimeout(() => {
-      dispatch(hideNotification({message: '', visibility: false}));
+      dispatch(hideNotification({ message: "", visibility: false }));
     }, 5000);
-  } 
+  };
   return (
     <div>
       <h2>create new</h2>
