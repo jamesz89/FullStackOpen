@@ -1,23 +1,24 @@
-export const displayNotification = (message) => {
+export const displayNotification = (data) => {
   return {
     type: 'SET_NOTIFICATION',
-    message
+    data
   }
 }
 
-export const hideNotification = () => {
+export const hideNotification = (data) => {
   return {
     type: 'CLEAR_NOTIFICATION',
+    data
   }
 }
 
-const notificationReducer = (state = '', action) => {
+const notificationReducer = (state = {message: '', visibility: false}, action) => {
   switch (action.type) {
     case "SET_NOTIFICATION": {
-      return action.message;
+      return action.data;
     }
     case 'CLEAR_NOTIFICATION': {
-      return ''
+      return action.data
     }
     default:
       return state;

@@ -20,9 +20,12 @@ const AnecdoteList = () => {
 
   const vote = (id, content) => {
     dispatch(voteAnecdote(id));
-    dispatch(displayNotification(`You have upvoted '${content}'`));
+    dispatch(displayNotification({
+      message: `You have upvoted "${content}"`,
+      visibility: true
+    }));
     setTimeout(() => {
-      dispatch(hideNotification());
+      dispatch(hideNotification({message: '', visibility: false}));
     }, 5000);
   };
 

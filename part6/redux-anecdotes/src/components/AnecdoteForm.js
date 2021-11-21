@@ -22,9 +22,9 @@ const AnecdoteForm = () => {
     event.target.anecdote.value = ''
     await anecdoteService.create(newAnecdote)
     dispatch(createAnecdote(newAnecdote))
-    dispatch(displayNotification(`New anecdote added`));
+    dispatch(displayNotification({message: 'A new anecdote has been added', visibility: true}));
     setTimeout(() => {
-      dispatch(hideNotification());
+      dispatch(hideNotification({message: '', visibility: false}));
     }, 5000);
   } 
   return (
