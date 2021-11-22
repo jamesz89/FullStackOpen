@@ -33,7 +33,7 @@
     {
       "content": "pruebita 2",
       "id": "47397",
-      "votes": 24
+      "votes": 25
     },
     {
       "content": "Pruebita 3",
@@ -43,7 +43,12 @@
     {
       "content": "pruebita 3",
       "id": "99603",
-      "votes": 1
+      "votes": 2
+    },
+    {
+      "content": "This is a test 4",
+      "id": "85797",
+      "votes": 2
     }
   ]
 }
