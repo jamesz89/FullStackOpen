@@ -5,9 +5,11 @@ import { setNotification } from "../reducers/notificationReducer";
 import { initializeAnecdotes } from "../reducers/anecdoteReducer";
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector((state) =>
-    state.anecdotes.sort((a, b) => b.votes - a.votes)
-  );
+  const anecdotes = useSelector(({filter, anecdotes}) => {
+    const sortedAnecdotes = anecdotes.sort((a,b) => b.votes - a.votes)
+    return sortedAnecdotes.filter(anecdote => anecdote.content.toLowerCase().indexOf(filter.toLowerCase()) > -1)
+  })
+
   const dispatch = useDispatch();
 
   useEffect(() => {
