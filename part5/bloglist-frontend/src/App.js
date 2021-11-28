@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useDispatch } from 'react-redux'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import { setNotification } from './reducers/notificationReducer'
 import Togglable from './components/Togglable'
 
 const App = () => {
@@ -11,8 +13,8 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [message, setMessage] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
+
+  const dispatch = useDispatch()
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -26,7 +28,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      displayErrorMessage('username or password is invalid')
+      dispatch(setNotification('All fields are required', 5))
       console.log(exception)
     }
   }
@@ -38,20 +40,6 @@ const App = () => {
     setUser(null)
   }
 
-  const displayMessage = (message) => {
-    setMessage(message)
-    setTimeout(() => {
-      setMessage(null)
-    }, 5000)
-  }
-
-  const displayErrorMessage = (message) => {
-    setErrorMessage(message)
-    setTimeout(() => {
-      setErrorMessage(null)
-    }, 5000)
-  }
-
   const togglableRef = useRef()
 
   const createBlog = async (newBlog) => {
@@ -61,12 +49,10 @@ const App = () => {
       const createdBlog = await blogService.create(newBlog)
       setBlogs(blogs.concat(createdBlog))
       console.log('new entry added')
-      displayMessage(
-        `A blog named "${newBlog.title}" by ${newBlog.author} has beed added`
-      )
+      dispatch(setNotification(`A blog named "${newBlog.title}" by ${newBlog.author} has beed added`, 5))
     } catch (exception) {
       console.log(exception)
-      displayErrorMessage('fill all the fields')
+      dispatch(setNotification('All fields are required', 5))
     }
   }
 
@@ -101,7 +87,7 @@ const App = () => {
     return (
       <div>
         <h2>log in to application</h2>
-        <Notification message={errorMessage} type="error" />
+        <Notification />
         <form onSubmit={handleLogin}>
           <label>username</label>
           <input id="username"
@@ -134,11 +120,10 @@ const App = () => {
       <button type="submit" onClick={handleLogout}>
         logout
       </button>
+      <Notification/>
       <Togglable buttonLabel="create a new blog" ref={togglableRef}>
         <BlogForm createBlog={createBlog} />
       </Togglable>
-      <Notification message={errorMessage} type="error" />
-      <Notification message={message} type="success" />
       <br />
       <div className="bloglist">
         {sortedBlogs.map((blog) => (
