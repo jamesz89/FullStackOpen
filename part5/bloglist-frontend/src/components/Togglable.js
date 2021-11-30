@@ -15,8 +15,6 @@ const Togglable = forwardRef(({ buttonLabel, children }, ref) => {
     }
   })
 
-
-
   return (
     <div>
       <div style={hideWhenVisible}>

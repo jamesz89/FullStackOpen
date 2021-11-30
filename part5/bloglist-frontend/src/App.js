@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import Blog from './components/Blog'
+import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -9,7 +9,6 @@ import { setNotification } from './reducers/notificationReducer'
 import Togglable from './components/Togglable'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -22,8 +21,6 @@ const App = () => {
       const user = await loginService.login({ username, password })
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
       blogService.setToken(user.token)
-      const blogs = await blogService.getAll()
-      setBlogs(blogs)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -40,48 +37,16 @@ const App = () => {
     setUser(null)
   }
 
-  const togglableRef = useRef()
-
-  const createBlog = async (newBlog) => {
-    try {
-      console.log('adding blog to list')
-      togglableRef.current.toggleVisibility()
-      const createdBlog = await blogService.create(newBlog)
-      setBlogs(blogs.concat(createdBlog))
-      console.log('new entry added')
-      dispatch(setNotification(`A blog named "${newBlog.title}" by ${newBlog.author} has beed added`, 5))
-    } catch (exception) {
-      console.log(exception)
-      dispatch(setNotification('All fields are required', 5))
-    }
-  }
-
-  const updateBlog = async (blogtoUpdate) => {
-    const id = blogtoUpdate.id
-    const blogObject = {
-      title: blogtoUpdate.title,
-      author: blogtoUpdate.author,
-      url: blogtoUpdate.url,
-      likes: blogtoUpdate.likes,
-    }
-    await blogService.update(id, blogObject)
-  }
-
-  const deleteBlog = async (id) => {
-    await blogService.remove(id)
-  }
-
   useEffect(() => {
     const loggedUserToken = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserToken) {
       const user = JSON.parse(loggedUserToken)
       setUser(user)
       blogService.setToken(user.token)
-      blogService.getAll().then((blogs) => setBlogs(blogs))
     }
   }, [])
 
-  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes)
+  const togglableRef = useRef()
 
   if (user === null) {
     return (
@@ -122,21 +87,10 @@ const App = () => {
       </button>
       <Notification/>
       <Togglable buttonLabel="create a new blog" ref={togglableRef}>
-        <BlogForm createBlog={createBlog} />
+        <BlogForm />
       </Togglable>
       <br />
-      <div className="bloglist">
-        {sortedBlogs.map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            handleUpdateBlog={updateBlog}
-            blogs={blogs}
-            setBlogs={setBlogs}
-            handleDeleteBlog={deleteBlog}
-          />
-        ))}
-      </div>
+      <BlogList />
     </div>
   )
 }

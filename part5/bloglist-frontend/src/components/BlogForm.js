@@ -1,9 +1,14 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
+import { createBlog } from '../reducers/blogReducer'
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+
+  const dispatch = useDispatch()
 
   const handleTitleChange = ({ target }) => {
     setTitle(target.value)
@@ -17,16 +22,22 @@ const BlogForm = ({ createBlog }) => {
     setUrl(target.value)
   }
 
-  const createNewBlog = (event) => {
+  const handleBlogCreation = (event => {
     event.preventDefault()
-    createBlog({ title, author, url, likes:0 })
-    setTitle('')
-    setAuthor('')
-    setUrl('')
-  }
+    if (title, author, url) {
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+      // togglableRef.current.toggleVisibility()
+      dispatch(createBlog({ title, author, url, likes:0 }))
+      dispatch(setNotification(`A blog named "${title}" by ${author} has beed added`, 5))
+    } else {
+      dispatch(setNotification('All fields are required', 5))
+    }
+  })
 
   return (
-    <form className='form' onSubmit={createNewBlog}>
+    <form className='form' onSubmit={handleBlogCreation}>
       <h2>Create new entry</h2>
       <label name="title">title</label>
       <input id='title'
