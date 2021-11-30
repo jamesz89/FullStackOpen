@@ -1,32 +1,28 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
+import { useSelector, useDispatch } from 'react-redux'
+import { showElement, hideElement } from '../reducers/togglableReducer'
 
-const Togglable = forwardRef(({ buttonLabel, children }, ref) => {
-  const [visible, setVisible] = useState(false)
+const Togglable = ({ buttonLabel, children }) => {
+  const visibility = useSelector((state) => state.visibility)
 
-  const showWhenVisible = { display: visible ? '' : 'none' }
-  const hideWhenVisible = { display: visible ? 'none' : '' }
+  const dispatch = useDispatch()
 
-  const toggleVisibility = () => setVisible(!visible)
-
-  useImperativeHandle(ref, () => {
-    return {
-      toggleVisibility,
-    }
-  })
+  const showWhenVisible = { display: visibility ? '' : 'none' }
+  const hideWhenVisible = { display: visibility ? 'none' : '' }
 
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button id="create" onClick={toggleVisibility}>{buttonLabel}</button>
+        <button id="create" onClick={() => dispatch(showElement())}>{buttonLabel}</button>
       </div>
       <div style={showWhenVisible}>
         {children}
-        <button id="cancel" onClick={toggleVisibility}>cancel</button>
+        <button id="cancel" onClick={() => dispatch(hideElement())}>cancel</button>
       </div>
     </div>
   )
-})
+}
 
 Togglable.displayName = 'Togglable'
 

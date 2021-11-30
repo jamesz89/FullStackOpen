@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
 import { createBlog } from '../reducers/blogReducer'
+import { hideElement } from '../reducers/togglableReducer'
 
 const BlogForm = () => {
   const [title, setTitle] = useState('')
@@ -28,7 +29,7 @@ const BlogForm = () => {
       setTitle('')
       setAuthor('')
       setUrl('')
-      // togglableRef.current.toggleVisibility()
+      dispatch(hideElement())
       dispatch(createBlog({ title, author, url, likes:0 }))
       dispatch(setNotification(`A blog named "${title}" by ${author} has beed added`, 5))
     } else {

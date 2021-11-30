@@ -34,7 +34,7 @@ const BlogList = () => {
       // blogService.getAll().then((blogs) => setBlogs(blogs))
       dispatch(initializeBlogs())
     }
-  }, [blogs])
+  }, [])
 
   return (
     <div className="bloglist">

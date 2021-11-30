@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
@@ -46,8 +46,6 @@ const App = () => {
     }
   }, [])
 
-  const togglableRef = useRef()
-
   if (user === null) {
     return (
       <div>
@@ -86,7 +84,7 @@ const App = () => {
         logout
       </button>
       <Notification/>
-      <Togglable buttonLabel="create a new blog" ref={togglableRef}>
+      <Togglable buttonLabel="create a new blog">
         <BlogForm />
       </Togglable>
       <br />
