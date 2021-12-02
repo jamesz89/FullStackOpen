@@ -15,6 +15,22 @@ const blogReducer = (state = [], action) => {
     }
     return state.concat(newBlog)
   }
+  case 'LIKE_BLOG': {
+    const id = action.id
+    const blogToLike = state.find((blog) => blog.id === id)
+    const likedBlog = {
+      ...blogToLike,
+      likes: blogToLike.likes + 1
+    }
+    const newState = state.map((blog) => {
+      return blog.id !== id ? blog : likedBlog
+    })
+    return newState
+  }
+  case 'DELETE_BLOG': {
+    const id = action.id
+    return state.filter(blog => blog.id !== id)
+  }
   default:
     return state
   }
@@ -42,6 +58,33 @@ export const createBlog = (blog) => {
         url: newBlog.url,
         likes: 0
       }
+    })
+  }
+}
+
+export const likeBlog = (blog) => {
+  const newBlog = {
+    id: blog.id,
+    title: blog.title,
+    author: blog.author,
+    url: blog.url,
+    likes: blog.likes + 1
+  }
+  return async dispatch => {
+    await blogService.update(newBlog)
+    dispatch({
+      type: 'LIKE_BLOG',
+      id: blog.id
+    })
+  }
+}
+
+export const deleteBlog = (id) => {
+  return async dispatch => {
+    await blogService.remove(id)
+    dispatch({
+      type: 'DELETE_BLOG',
+      id
     })
   }
 }

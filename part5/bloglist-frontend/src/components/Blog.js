@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 
-const Blog = ({ blog, handleUpdateBlog, blogs, setBlogs, handleDeleteBlog }) => {
+const Blog = ({ blog, handleLike, handleDelete }) => {
   const [showDetails, setShowDetails] = useState(false)
   const blogStyle = {
     paddingTop: 10,
@@ -12,33 +12,6 @@ const Blog = ({ blog, handleUpdateBlog, blogs, setBlogs, handleDeleteBlog }) => 
   }
 
   const showWhenVisible = { display: showDetails ? '' : 'none' }
-
-  const addLike = () => {
-    const blogToUpdate = {
-      id: blog.id,
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
-      likes: blog.likes + 1,
-    }
-    const updatedBlogs = [...blogs]
-    const blogIndex = updatedBlogs.findIndex(
-      (currentBlog) => currentBlog.id === blog.id
-    )
-    updatedBlogs.splice(blogIndex, 1, blogToUpdate)
-    setBlogs(updatedBlogs)
-    handleUpdateBlog(blogToUpdate)
-  }
-
-  const removeBlog = () => {
-    const updatedBlogs = [...blogs]
-    const blogIndex = updatedBlogs.findIndex(
-      (currentBlog) => currentBlog.id === blog.id
-    )
-    updatedBlogs.splice(blogIndex, 1)
-    setBlogs(updatedBlogs)
-    handleDeleteBlog(blog.id)
-  }
 
   return (
     <div className="blog" style={blogStyle}>
@@ -52,22 +25,20 @@ const Blog = ({ blog, handleUpdateBlog, blogs, setBlogs, handleDeleteBlog }) => 
           <span>{blog.url}</span>
           <br />
           <span className="likes">{blog.likes}</span>
-          <span>likes</span>
-          <button className='btn-like' onClick={addLike}>like</button>
+          <span> likes</span>
+          <button className='btn-like' onClick={() => handleLike(blog)}>like</button>
           <br />
-          <button onClick={removeBlog}>remove</button>
+          <button onClick={() => handleDelete(blog.id)}>remove</button>
         </div>
       </div>
     </div>
   )
 }
 
-// Blog.propTypes = {
-//   blog: PropTypes.object.isRequired,
-//   handleUpdateBlog: PropTypes.func.isRequired,
-//   blogs: PropTypes.array.isRequired,
-//   setBlogs:PropTypes.func.isRequired,
-//   handleDeleteBlog: PropTypes.func.isRequired
-// }
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  handleLike: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired
+}
 
 export default Blog
