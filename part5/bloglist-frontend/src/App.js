@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
-import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import { setNotification } from './reducers/notificationReducer'
+import { login, logout } from './reducers/userReducer'
 import Togglable from './components/Togglable'
 
 const App = () => {
+  const user = useSelector(({ user }) => user)
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
 
   const dispatch = useDispatch()
 
@@ -20,10 +21,9 @@ const App = () => {
     try {
       const user = await loginService.login({ username, password })
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
-      blogService.setToken(user.token)
-      setUser(user)
       setUsername('')
       setPassword('')
+      dispatch(login(user))
     } catch (exception) {
       dispatch(setNotification('All fields are required', 5))
       console.log(exception)
@@ -32,17 +32,15 @@ const App = () => {
 
   const handleLogout = (event) => {
     event.preventDefault()
-    console.log('logging out')
     window.localStorage.removeItem('loggedBlogAppUser')
-    setUser(null)
+    dispatch(logout())
   }
 
   useEffect(() => {
     const loggedUserToken = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserToken) {
       const user = JSON.parse(loggedUserToken)
-      setUser(user)
-      blogService.setToken(user.token)
+      dispatch(login(user))
     }
   }, [])
 
