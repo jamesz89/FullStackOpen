@@ -1,16 +1,23 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import Blog from './Blog'
 import Togglable from './Togglable'
 import BlogForm from './BlogForm'
-import { useCurrentUser } from '../hooks/useCurrentUser'
+import { initializeBlogs } from '../reducers/blogReducer'
 
 const BlogList = () => {
   const blogs = useSelector(({ blogs }) => {
     return blogs.sort((a,b) => b.likes - a.likes)
   })
 
-  useCurrentUser()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const loggedUserToken = window.localStorage.getItem('loggedBlogAppUser')
+    if (loggedUserToken) {
+      dispatch(initializeBlogs())
+    }
+  }, [dispatch])
 
   return (
     <div className="bloglist">
