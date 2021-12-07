@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route  } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import BlogList from './components/BlogList'
-import BlogForm from './components/BlogForm'
 import UserList from './components/UserList'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import { setNotification } from './reducers/notificationReducer'
 import { login, logout } from './reducers/userReducer'
-import Togglable from './components/Togglable'
 import userService from './services/users'
 import User from './components/User'
 
@@ -95,9 +93,6 @@ const App = () => {
         logout
       </button>
       <Notification/>
-      <Togglable buttonLabel="create a new blog">
-        <BlogForm />
-      </Togglable>
       <br />
       <Routes>
         <Route path="/" element={<BlogList/>}/>

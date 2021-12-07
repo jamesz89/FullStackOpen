@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteBlog, initializeBlogs, likeBlog } from '../reducers/blogReducer'
 import Blog from './Blog'
+import Togglable from './Togglable'
+import BlogForm from './BlogForm'
 
 const BlogList = () => {
   const blogs = useSelector(({ blogs }) => {
@@ -27,6 +29,9 @@ const BlogList = () => {
 
   return (
     <div className="bloglist">
+      <Togglable buttonLabel="create a new blog">
+        <BlogForm />
+      </Togglable>
       {blogs.map((blog) => (
         <Blog
           key={blog.id}
