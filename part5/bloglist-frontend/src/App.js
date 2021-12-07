@@ -9,6 +9,7 @@ import { setNotification } from './reducers/notificationReducer'
 import { login, logout } from './reducers/userReducer'
 import UserDetails from './components/UserDetails'
 import BlogDetails from './components/BlogDetails'
+import NavigationBar from './components/NavigationBar'
 
 
 const App = () => {
@@ -77,13 +78,8 @@ const App = () => {
 
   return (
     <Router>
-      <h2>Blogs</h2>
-      <p>
-        {user.name} ({user.username}) is logged in
-      </p>
-      <button type="submit" onClick={handleLogout}>
-        logout
-      </button>
+      <NavigationBar user={user} handleLogout={handleLogout}/>
+      <h2>Blog app</h2>
       <Notification/>
       <br />
       <Routes>
