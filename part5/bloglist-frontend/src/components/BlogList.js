@@ -17,7 +17,7 @@ const BlogList = () => {
     if (loggedUserToken) {
       dispatch(initializeBlogs())
     }
-  }, [dispatch])
+  }, [])
 
   const handleLike = (blog) => {
     dispatch(likeBlog(blog))

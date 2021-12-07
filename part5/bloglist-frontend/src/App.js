@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route  } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import BlogList from './components/BlogList'
 import UserList from './components/UserList'
@@ -7,17 +7,15 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import { setNotification } from './reducers/notificationReducer'
 import { login, logout } from './reducers/userReducer'
-import { useUsers } from './hooks/useUsers'
-import User from './components/User'
+import UserDetails from './components/UserDetails'
+import BlogDetails from './components/BlogDetails'
 
 const App = () => {
   const user = useSelector(({ user }) => user)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const{ users } = useUsers()
   const dispatch = useDispatch()
-
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -87,8 +85,9 @@ const App = () => {
       <br />
       <Routes>
         <Route path="/" element={<BlogList/>}/>
-        <Route exact path="/users/" element={<UserList />}/>
-        <Route exact path="/users/:id" element={<User users={users}/>}/>
+        <Route path="/users/" element={<UserList />}/>
+        <Route path="/users/:id" element={<UserDetails />}/>
+        <Route path="/blogs/:id" element={<BlogDetails/>}/>
       </Routes>
     </Router>
   )

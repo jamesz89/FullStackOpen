@@ -1,7 +1,9 @@
 import React from 'react'
 import { useParams } from 'react-router'
+import { useUsers } from '../hooks/useUsers'
 
-const User = ({ users }) => {
+const User = () => {
+  const{ users } = useUsers()
   const id = useParams().id
   const user = users.find((user) => user.id === id)
 
