@@ -1,11 +1,18 @@
 import React from 'react'
+import { useUsers } from '../hooks/useUsers'
 import { Link } from 'react-router-dom'
 
 const headerStyle = {
   fontWeight: 'bold',
 }
 
-const UserList = ({ users }) => {
+const UserList = () => {
+  const { users } = useUsers()
+
+  if (!users) {
+    return null
+  }
+
   return (
     <div>
       <h2>Users</h2>

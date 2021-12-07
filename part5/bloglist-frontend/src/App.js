@@ -7,16 +7,15 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import { setNotification } from './reducers/notificationReducer'
 import { login, logout } from './reducers/userReducer'
-import userService from './services/users'
+import { useUsers } from './hooks/useUsers'
 import User from './components/User'
 
 const App = () => {
   const user = useSelector(({ user }) => user)
-  const [users, setUsers] = useState([])
-
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
+  const{ users } = useUsers()
   const dispatch = useDispatch()
 
   const handleLogin = async (event) => {
@@ -38,14 +37,6 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogAppUser')
     dispatch(logout())
   }
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const data = await userService.getAll()
-      setUsers(data)
-    }
-    fetchUsers()
-  }, [])
 
   useEffect(() => {
     const loggedUserToken = window.localStorage.getItem('loggedBlogAppUser')
@@ -96,8 +87,8 @@ const App = () => {
       <br />
       <Routes>
         <Route path="/" element={<BlogList/>}/>
-        <Route path="/users/" element={<UserList users={users}/>}/>
-        <Route path="/users/:id" element={<User users={users}/>}/>
+        <Route exact path="/users/" element={<UserList />}/>
+        <Route exact path="/users/:id" element={<User users={users}/>}/>
       </Routes>
     </Router>
   )
