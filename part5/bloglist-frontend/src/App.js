@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import BlogList from './components/BlogList'
@@ -9,6 +9,7 @@ import { setNotification } from './reducers/notificationReducer'
 import { login, logout } from './reducers/userReducer'
 import UserDetails from './components/UserDetails'
 import BlogDetails from './components/BlogDetails'
+import { useCurrentUser } from './hooks/useCurrentUser'
 
 const App = () => {
   const user = useSelector(({ user }) => user)
@@ -16,6 +17,7 @@ const App = () => {
   const [password, setPassword] = useState('')
 
   const dispatch = useDispatch()
+
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -36,13 +38,7 @@ const App = () => {
     dispatch(logout())
   }
 
-  useEffect(() => {
-    const loggedUserToken = window.localStorage.getItem('loggedBlogAppUser')
-    if (loggedUserToken) {
-      const user = JSON.parse(loggedUserToken)
-      dispatch(login(user))
-    }
-  }, [])
+  useCurrentUser()
 
   if (user === null) {
     return (

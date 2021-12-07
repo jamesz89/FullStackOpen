@@ -22,9 +22,7 @@ const blogReducer = (state = [], action) => {
       ...blogToLike,
       likes: blogToLike.likes + 1
     }
-    const newState = state.map((blog) => {
-      return blog.id !== id ? blog : likedBlog
-    })
+    const newState = state.map((blog) => blog.id !== id ? blog : likedBlog)
     return newState
   }
   case 'DELETE_BLOG': {

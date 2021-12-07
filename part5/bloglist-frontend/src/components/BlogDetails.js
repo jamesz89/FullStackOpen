@@ -1,23 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router'
-import { useBlogs } from '../hooks/useBlogs'
-// import { useDispatch } from 'react-redux'
-// import { likeBlog } from '../reducers/blogReducer'
+import { initializeBlogs } from '../reducers/blogReducer'
+import { useSelector, useDispatch } from 'react-redux'
+import { likeBlog } from '../reducers/blogReducer'
 
 const BlogDetails = () => {
-  const { blogs } = useBlogs()
+  const blogs = useSelector(({ blogs }) => blogs)
   const { id } = useParams()
   const blog = blogs.find((blog) => blog.id === id)
 
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-  // const handleLike = () => {
-  //   dispatch(likeBlog(blog))
-  // }
+  useEffect(() => {
+    const loggedUserToken = window.localStorage.getItem('loggedBlogAppUser')
+    if (loggedUserToken) {
+      dispatch(initializeBlogs())
+    }
+  }, [])
 
-  // const handleDelete = (id) => {
-  //   dispatch(deleteBlog(id))
-  // }
+
+  const handleLike = () => {
+    dispatch(likeBlog(blog))
+  }
 
   if (!blog) {
     return null
@@ -25,11 +29,10 @@ const BlogDetails = () => {
   return (
     <div>
       <h2>{blog.title} by {blog.author}</h2>
-      <br/>
       <span>{blog.url}</span>
       <br/>
       <span>{blog.likes} likes </span>
-      <button>like</button>
+      <button onClick={handleLike}>like</button>
       <br/>
       <span>added by {blog.user.name}</span>
     </div>
