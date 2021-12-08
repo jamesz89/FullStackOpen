@@ -6,14 +6,7 @@ const blogReducer = (state = [], action) => {
     return action.data
   }
   case 'ADD_BLOG' : {
-    const newBlog = {
-      id: action.data.id,
-      title: action.data.title,
-      author: action.data.author,
-      url: action.data.url,
-      likes: action.data.likes
-    }
-    return state.concat(newBlog)
+    return state.concat(action.data)
   }
   case 'LIKE_BLOG': {
     const id = action.id
@@ -47,15 +40,10 @@ export const initializeBlogs = () => {
 export const createBlog = (blog) => {
   return async dispatch => {
     const newBlog = await blogService.create(blog)
+    console.log(newBlog)
     dispatch({
       type: 'ADD_BLOG',
-      data: {
-        id: newBlog.id,
-        title: newBlog.title,
-        author: newBlog.author,
-        url: newBlog.url,
-        likes: 0
-      }
+      data: newBlog
     })
   }
 }
