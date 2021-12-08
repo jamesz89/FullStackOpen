@@ -1,4 +1,5 @@
 import blogService from '../services/blogs'
+import commentService from '../services/comments'
 
 const userReducer = (state = null, action) => {
   switch (action.type) {
@@ -16,6 +17,7 @@ const userReducer = (state = null, action) => {
 export const login = (user) => {
   return async dispatch => {
     await blogService.setToken(user.token)
+    await commentService.setToken(user.token)
     dispatch({
       type: 'LOG_IN',
       user
