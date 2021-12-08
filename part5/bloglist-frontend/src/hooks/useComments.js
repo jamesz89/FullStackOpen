@@ -2,17 +2,23 @@ import { useState, useEffect } from 'react'
 import commentService from '../services/comments'
 
 export const useComments = (id) => {
-  const [comments, setComments] = useState([])
+  const [list, setList] = useState([])
 
   useEffect(() => {
     const fetchComments = async () => {
       const data = await commentService.getAll(id)
-      setComments(data)
+      setList(data)
     }
     fetchComments()
   }, [])
 
+  const post = async (id, newComment) => {
+    const data =  await commentService.create(id, newComment)
+    setList(list.concat(data))
+  }
+
   return {
-    comments,
+    list,
+    post
   }
 }
