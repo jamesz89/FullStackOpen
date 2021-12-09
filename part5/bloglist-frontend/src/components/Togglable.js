@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import { showElement, hideElement } from '../reducers/togglableReducer'
+import { Button } from 'react-bootstrap'
 
 const Togglable = ({ buttonLabel, children }) => {
   const visibility = useSelector((state) => state.visibility)
@@ -13,12 +14,12 @@ const Togglable = ({ buttonLabel, children }) => {
 
   return (
     <div>
-      <div style={hideWhenVisible}>
-        <button id="create" onClick={() => dispatch(showElement())}>{buttonLabel}</button>
+      <div className="d-flex" style={hideWhenVisible}>
+        <Button className="mb-3" id="create" onClick={() => dispatch(showElement())}>{buttonLabel}</Button>
       </div>
       <div style={showWhenVisible}>
         {children}
-        <button id="cancel" onClick={() => dispatch(hideElement())}>cancel</button>
+        <Button className="mb-3" id="cancel" onClick={() => dispatch(hideElement())}>Cancel</Button>
       </div>
     </div>
   )

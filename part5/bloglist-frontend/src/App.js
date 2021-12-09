@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Routes, Route, } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import BlogList from './components/BlogList'
 import UserList from './components/UserList'
@@ -10,6 +10,8 @@ import { login, logout } from './reducers/userReducer'
 import UserDetails from './components/UserDetails'
 import BlogDetails from './components/BlogDetails'
 import NavigationBar from './components/NavigationBar'
+import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+
 
 
 const App = () => {
@@ -47,47 +49,55 @@ const App = () => {
     }
   }, [])
 
-
   if (user === null) {
     return (
-      <div>
-        <h2>log in to application</h2>
-        <Notification />
-        <form onSubmit={handleLogin}>
-          <label>username</label>
-          <input id="username"
-            type="text"
-            name="Username"
-            value={username}
-            onChange={({ target }) => setUsername(target.value)}
-          />
-          <br />
-          <label>password</label>
-          <input id="password"
-            type="password"
-            name="Password"
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
-          />
-          <br />
-          <button type="submit">login</button>
-        </form>
-      </div>
+      <Container className="mt-5">
+        <Row>
+          <Col md="12">
+            <h2 className="text-center">Blogs App</h2>
+            <Notification />
+            <Form onSubmit={handleLogin}>
+              <Form.Group id="username">
+                <Form.Label>username</Form.Label>
+                <Form.Control id="username"
+                  type="text"
+                  name="Username"
+                  value={username}
+                  onChange={({ target }) => setUsername(target.value)}
+                />
+              </Form.Group>
+
+              <Form.Group id="password">
+                <Form.Label>password</Form.Label>
+                <Form.Control
+                  type="password"
+                  name="Password"
+                  value={password}
+                  onChange={({ target }) => setPassword(target.value)}
+                />
+              </Form.Group>
+              <Button className="mt-4" id="form-login-button" variant="primary" type="submit">
+                Login
+              </Button>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
     )
   }
 
   return (
     <Router>
       <NavigationBar user={user} handleLogout={handleLogout}/>
-      <h2>Blog app</h2>
-      <Notification/>
-      <br />
-      <Routes>
-        <Route path="/" element={<BlogList/>}/>
-        <Route path="/users/" element={<UserList />}/>
-        <Route path="/users/:id" element={<UserDetails />}/>
-        <Route path="/blogs/:id" element={<BlogDetails/>}/>
-      </Routes>
+      <Container>
+        <Notification/>
+        <Routes>
+          <Route path="/" element={<BlogList/>}/>
+          <Route path="/users/" element={<UserList />}/>
+          <Route path="/users/:id" element={<UserDetails />}/>
+          <Route path="/blogs/:id" element={<BlogDetails/>}/>
+        </Routes>
+      </Container>
     </Router>
   )
 }

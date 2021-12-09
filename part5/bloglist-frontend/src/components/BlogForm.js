@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
 import { createBlog } from '../reducers/blogReducer'
 import { hideElement } from '../reducers/togglableReducer'
+import { Form, Button } from 'react-bootstrap'
 
 const BlogForm = () => {
   const [title, setTitle] = useState('')
@@ -38,29 +39,31 @@ const BlogForm = () => {
   })
 
   return (
-    <form className='form' onSubmit={handleBlogCreation}>
-      <h2>Create new entry</h2>
-      <label name="title">title</label>
-      <input id='title'
-        type="text"
-        name="title"
-        value={title}
-        onChange={handleTitleChange}
-      />
-      <br />
-      <label name="author">author</label>
-      <input id='author'
-        type="text"
-        name="author"
-        value={author}
-        onChange={handleAuthorChange}
-      />
-      <br />
-      <label name="url">url</label>
-      <input id='url' type="text" name="url" value={url} onChange={handleUrlChange} />
-      <br />
-      <button id="save" type="submit">create</button>
-    </form>
+    <Form className='form' onSubmit={handleBlogCreation}>
+      <Form.Group>
+        <Form.Label name="title">title</Form.Label>
+        <Form.Control id='title'
+          type="text"
+          name="title"
+          value={title}
+          onChange={handleTitleChange}
+        />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label name="author">author</Form.Label>
+        <Form.Control id='author'
+          type="text"
+          name="author"
+          value={author}
+          onChange={handleAuthorChange}
+        />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label name="url">url</Form.Label>
+        <Form.Control id='url' type="text" name="url" value={url} onChange={handleUrlChange} />
+      </Form.Group>
+      <Button className="my-2" id="save" type="submit">Create</Button>
+    </Form>
   )
 }
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useUsers } from '../hooks/useUsers'
 import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 
 const headerStyle = {
   fontWeight: 'bold',
@@ -14,13 +15,13 @@ const UserList = () => {
   }
 
   return (
-    <div>
+    <div className="mt-4">
       <h2>Users</h2>
-      <table cellPadding="3">
+      <Table className="w-50" bordered striped hover>
         <thead>
           <tr>
             <td></td>
-            <td style={headerStyle}>blogs created</td>
+            <td align="right" style={headerStyle}>blogs created</td>
           </tr>
         </thead>
         <tbody>
@@ -31,7 +32,7 @@ const UserList = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </div>
   )
 }

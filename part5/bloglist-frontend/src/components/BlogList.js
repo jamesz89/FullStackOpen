@@ -4,6 +4,7 @@ import Blog from './Blog'
 import Togglable from './Togglable'
 import BlogForm from './BlogForm'
 import { initializeBlogs } from '../reducers/blogReducer'
+import { Table } from 'react-bootstrap'
 
 const BlogList = () => {
   const blogs = useSelector(({ blogs }) => {
@@ -20,16 +21,21 @@ const BlogList = () => {
   }, [dispatch])
 
   return (
-    <div className="bloglist">
-      <Togglable buttonLabel="create a new blog">
+    <div>
+      <h2>Blogs</h2>
+      <Togglable buttonLabel="Add a new blog">
         <BlogForm />
       </Togglable>
-      {blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-        />
-      ))}
+      <Table striped bordered hover>
+        <tbody>
+          {blogs.map((blog) => (
+            <Blog
+              key={blog.id}
+              blog={blog}
+            />
+          ))}
+        </tbody>
+      </Table>
     </div>
   )
 }
